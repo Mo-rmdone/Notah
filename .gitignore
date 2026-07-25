@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Env — بيانات الاتصال بـ Supabase لا تُرفع للمستودع
+.env
+.env.*
+!.env.example
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
