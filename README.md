@@ -96,7 +96,23 @@ npm run build        # فحص الأنواع + بناء الإنتاج · type-c
 npm run lint         # oxlint
 ```
 
-## ٤. النشر على Cloudflare Pages · Deploy
+## ٤. فحص ملفات الهجرة · Verifying the migrations
+
+يوجد فحص يشغّل الهجرات على Postgres مؤقت داخل Docker ويتحقق من المحفزات وسياسات الأمان،
+دون المساس بمشروع Supabase:
+A test harness applies the migrations to a throwaway Postgres container and checks the balance
+triggers, the reporting RPCs, and every RLS rule — without touching your Supabase project:
+
+```bash
+bash supabase/tests/run.sh
+```
+
+يتحقق من: خصم الدفعة واستعادتها عند الحذف، رفض الدفعة الأكبر من المتبقي، إعادة حساب المتبقي عند
+التعديل، وأن المحصّل لا يستطيع تعديل العملاء أو رؤية التجار ورأس المال.
+Covers: payment deduct/restore, overpayment rejection, server-side recomputation of balances, and
+that a collector cannot edit customers, delete payments, or see suppliers and capital.
+
+## ٥. النشر على Cloudflare Pages · Deploy
 
 **من لوحة تحكم Cloudflare · via the dashboard**
 
@@ -119,7 +135,7 @@ npx wrangler pages deploy dist
 `public/_redirects` يوجّه كل المسارات إلى `index.html` حتى تعمل مسارات SPA عند تحديث الصفحة.
 `public/_redirects` handles SPA routing so deep links survive a refresh.
 
-## ٥. تحديث أنواع قاعدة البيانات · Regenerating DB types
+## ٦. تحديث أنواع قاعدة البيانات · Regenerating DB types
 
 `src/types/database.types.ts` مكتوب يدويًا ليطابق ملفات الهجرة. بعد أي تعديل على المخطط:
 Hand-written to match the migrations. After a schema change:
@@ -136,6 +152,7 @@ npx supabase gen types typescript --project-id <ref> --schema public > src/types
 supabase/
   migrations/          # SQL: schema, RLS, RPCs, storage
   seed.sql             # بيانات تجريبية · sample data
+  tests/               # فحص الهجرات على Docker · migration test harness
 src/
   components/ui/       # shadcn-style primitives (RTL-safe logical properties)
   components/layout/   # الهيكل والشريط الجانبي · app shell & sidebar
