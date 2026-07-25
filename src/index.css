@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* ورق الدفتر — paper surfaces, banknote-green ink */
+  --background: #f6f7f5;
+  --foreground: #1c2321;
+  --card: #ffffff;
+  --card-foreground: #1c2321;
+  --popover: #ffffff;
+  --popover-foreground: #1c2321;
+  --primary: #0d5c50;
+  --primary-foreground: #f2fbf8;
+  --secondary: #e8eeea;
+  --secondary-foreground: #1c2321;
+  --muted: #eef1ee;
+  --muted-foreground: #5c6b66;
+  --accent: #e6f2ee;
+  --accent-foreground: #0d5c50;
+  --destructive: #b3261e;
+  --destructive-foreground: #fef2f2;
+  --border: #dce3df;
+  --input: #dce3df;
+  --ring: #0d5c50;
+  --radius: 0.5rem;
+
+  /* حالات السداد — payment statuses */
+  --status-paid: #15803d;
+  --status-paid-bg: #eaf5ee;
+  --status-partial: #b45309;
+  --status-partial-bg: #fdf3e3;
+  --status-missed: #b3261e;
+  --status-missed-bg: #fbeeed;
+
+  /* ألوان الرسوم البيانية */
+  --chart-1: #0d5c50;
+  --chart-2: #b98136;
+  --chart-3: #5b7db1;
+  --chart-4: #7c4a3a;
+  --chart-5: #5c6b66;
+
+  /* الشريط الجانبي — dark banknote green */
+  --sidebar: #0b3d36;
+  --sidebar-foreground: #d7e6e1;
+  --sidebar-accent: #105147;
+  --sidebar-accent-foreground: #f2fbf8;
+  --sidebar-border: #16564c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-status-paid: var(--status-paid);
+  --color-status-paid-bg: var(--status-paid-bg);
+  --color-status-partial: var(--status-partial);
+  --color-status-partial-bg: var(--status-partial-bg);
+  --color-status-missed: var(--status-missed);
+  --color-status-missed-bg: var(--status-missed-bg);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-sans: 'Cairo', ui-sans-serif, system-ui, sans-serif;
+  --font-brand: 'Aref Ruqaa', 'Cairo', serif;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* الأرقام المالية بعرض ثابت حتى تصطف في الجداول */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
