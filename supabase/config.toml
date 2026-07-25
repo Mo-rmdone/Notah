@@ -1,0 +1,5 @@
+# Minimal Supabase CLI config — enough for `supabase link` / `supabase db push`.
+project_id = "monthly-installments"
+
+[db]
+major_version = 17
