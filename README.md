@@ -141,9 +141,17 @@ npx wrangler deploy --dry-run
 ```
 
 `not_found_handling = "single-page-application"` في `wrangler.toml` يعيد `index.html` لأي مسار غير
-معروف حتى تعمل مسارات SPA عند تحديث الصفحة. (`public/_redirects` يؤدي نفس الغرض على Cloudflare Pages.)
+معروف حتى تعمل مسارات SPA عند تحديث الصفحة.
+
+> لا تُضِف ملف `public/_redirects` بقاعدة `/* /index.html 200`: هذه القاعدة صحيحة على Cloudflare
+> Pages لكن Workers ترفضها عند النشر بخطأ «Infinite loop detected»، لأن `not_found_handling` يؤدي
+> نفس الغرض أصلًا.
 `not_found_handling = "single-page-application"` serves `index.html` for unknown paths so deep links
-survive a refresh. (`public/_redirects` does the same job on Cloudflare Pages.)
+survive a refresh.
+
+> Do not add a `public/_redirects` file containing `/* /index.html 200`. That rule is correct on
+> Cloudflare Pages, but Workers rejects it at deploy time with "Infinite loop detected" — Workers
+> already normalizes `/index.html`, and `not_found_handling` covers the same case.
 
 ## ٦. تحديث أنواع قاعدة البيانات · Regenerating DB types
 
