@@ -112,28 +112,38 @@ bash supabase/tests/run.sh
 Covers: payment deduct/restore, overpayment rejection, server-side recomputation of balances, and
 that a collector cannot edit customers, delete payments, or see suppliers and capital.
 
-## ٥. النشر على Cloudflare Pages · Deploy
+## ٥. النشر على Cloudflare · Deploy
+
+`wrangler.toml` مضبوط كـ **Worker يقدّم ملفات ثابتة** (Workers Static Assets)، وهو ما يوافق أمر
+النشر الافتراضي `npx wrangler deploy`.
+`wrangler.toml` is configured as a **Worker serving static assets**, which matches the default
+`npx wrangler deploy` deploy command.
 
 **من لوحة تحكم Cloudflare · via the dashboard**
 
-1. Workers & Pages → Create → Pages → Connect to Git، واختر المستودع.
+1. Workers & Pages → Create → Connect to Git، واختر المستودع.
 2. إعدادات البناء · build settings:
-   - Framework preset: **Vite**
    - Build command: `npm run build`
-   - Build output directory: `dist`
-3. Settings → Environment variables، أضف `VITE_SUPABASE_URL` و `VITE_SUPABASE_ANON_KEY`
-   لبيئتي Production و Preview. **متغيرات Vite تُقرأ وقت البناء** — أي تعديل يتطلب إعادة نشر.
-   Vite inlines env vars at build time, so changing them requires a redeploy.
+   - Deploy command: `npx wrangler deploy`
+3. Settings → Variables and Secrets، أضف `VITE_SUPABASE_URL` و `VITE_SUPABASE_ANON_KEY`.
+   **متغيرات Vite تُدمج وقت البناء** — لن تسري إلا بعد إعادة نشر، والبناء ينجح حتى لو كانت ناقصة
+   (ستظهر شاشة «إعدادات Supabase غير مكتملة» بدل صفحة الدخول).
+   Vite inlines env vars at build time: the build still succeeds without them, and the site simply
+   renders the setup screen — so set them *before* the build you intend to ship, and redeploy after
+   any change.
 
 **من سطر الأوامر · via Wrangler**
 
 ```bash
 npm run build
-npx wrangler pages deploy dist
+npx wrangler deploy              # أو للتحقق دون نشر · or validate without deploying:
+npx wrangler deploy --dry-run
 ```
 
-`public/_redirects` يوجّه كل المسارات إلى `index.html` حتى تعمل مسارات SPA عند تحديث الصفحة.
-`public/_redirects` handles SPA routing so deep links survive a refresh.
+`not_found_handling = "single-page-application"` في `wrangler.toml` يعيد `index.html` لأي مسار غير
+معروف حتى تعمل مسارات SPA عند تحديث الصفحة. (`public/_redirects` يؤدي نفس الغرض على Cloudflare Pages.)
+`not_found_handling = "single-page-application"` serves `index.html` for unknown paths so deep links
+survive a refresh. (`public/_redirects` does the same job on Cloudflare Pages.)
 
 ## ٦. تحديث أنواع قاعدة البيانات · Regenerating DB types
 

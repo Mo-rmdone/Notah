@@ -1,3 +1,11 @@
-name = "monthly-installments"
+# Cloudflare Worker serving the built SPA as static assets.
+# The project's deploy command is `npx wrangler deploy`, which needs either a
+# Worker entry point or an assets directory — `pages_build_output_dir` is the
+# Pages-only key and is not enough for that command.
+name = "notah"
 compatibility_date = "2026-07-25"
-pages_build_output_dir = "dist"
+
+[assets]
+directory = "./dist"
+# Serve index.html for unknown paths so refreshing /customers doesn't 404.
+not_found_handling = "single-page-application"
