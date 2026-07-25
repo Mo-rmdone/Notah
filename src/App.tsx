@@ -1,8 +1,18 @@
+import { QueryClientProvider } from '@tanstack/react-query'
+import { RouterProvider } from 'react-router-dom'
+import { queryClient } from '@/lib/queryClient'
+import { AuthProvider } from '@/features/auth/hooks/useAuth'
+import { Toaster } from '@/components/ui/sonner'
+import { router } from '@/routes/router'
+
 function App() {
   return (
-    <div className="flex min-h-svh items-center justify-center">
-      <h1 className="font-brand text-4xl text-primary">نظام إدارة الأقساط</h1>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+        <Toaster />
+      </AuthProvider>
+    </QueryClientProvider>
   )
 }
 
