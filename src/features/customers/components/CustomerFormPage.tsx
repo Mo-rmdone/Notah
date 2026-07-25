@@ -8,13 +8,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import {
   Select,
@@ -191,20 +191,21 @@ function CustomerForm({ existing }: { existing: Tables<'customers'> | null }) {
                   </FormItem>
                 )}
               />
-              <FormItem>
-                <FormLabel htmlFor="national-id-photo">صورة البطاقة</FormLabel>
+              {/* Not a form field — plain markup, since FormLabel needs FormField context. */}
+              <div className="space-y-2">
+                <Label htmlFor="national-id-photo">صورة البطاقة</Label>
                 <Input
                   id="national-id-photo"
                   type="file"
                   accept="image/*"
                   onChange={(e) => setPhoto(e.target.files?.[0] ?? null)}
                 />
-                <FormDescription>
+                <p className="text-xs text-muted-foreground">
                   {isEdit && existing.national_id_photo
                     ? 'يوجد صورة محفوظة — اختر ملفًا جديدًا لاستبدالها'
                     : 'تُحفظ في مخزن خاص ولا تُعرض إلا برابط مؤقت'}
-                </FormDescription>
-              </FormItem>
+                </p>
+              </div>
               <FormField
                 control={form.control}
                 name="address"

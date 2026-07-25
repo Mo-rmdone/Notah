@@ -14,13 +14,13 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useAddSupplierInvoice } from '@/features/suppliers/hooks/useSuppliers'
 import { invoiceSchema, type InvoiceInput } from '@/features/suppliers/schemas/supplier'
@@ -109,16 +109,19 @@ export function InvoiceDialog({ supplierId }: { supplierId: string }) {
                 )}
               />
             </div>
-            <FormItem>
-              <FormLabel htmlFor="invoice-file">ملف الفاتورة</FormLabel>
+            {/* Not a form field — plain markup, since FormLabel needs FormField context. */}
+            <div className="space-y-2">
+              <Label htmlFor="invoice-file">ملف الفاتورة</Label>
               <Input
                 id="invoice-file"
                 type="file"
                 accept="image/*,application/pdf"
                 onChange={(e) => setFile(e.target.files?.[0] ?? null)}
               />
-              <FormDescription>يُحفظ في مخزن خاص، ويُفتح برابط مؤقت عند الطلب</FormDescription>
-            </FormItem>
+              <p className="text-xs text-muted-foreground">
+                يُحفظ في مخزن خاص، ويُفتح برابط مؤقت عند الطلب
+              </p>
+            </div>
             <FormField
               control={form.control}
               name="note"

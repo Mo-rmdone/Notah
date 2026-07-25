@@ -21,6 +21,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useProfile } from '@/features/auth/hooks/useProfile'
 import { useAddPayment } from '@/features/payments/hooks/usePayments'
@@ -109,10 +110,11 @@ export function AddPaymentDialog({ customer }: { customer: Tables<'customers'> }
                 </FormItem>
               )}
             />
-            <FormItem>
-              <FormLabel>المحصّل</FormLabel>
-              <Input value={profile?.full_name ?? ''} disabled />
-            </FormItem>
+            {/* Not a form field — plain markup, since FormLabel needs FormField context. */}
+            <div className="space-y-2">
+              <Label htmlFor="collector-name">المحصّل</Label>
+              <Input id="collector-name" value={profile?.full_name ?? ''} disabled />
+            </div>
             <FormField
               control={form.control}
               name="note"
