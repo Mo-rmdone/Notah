@@ -9,6 +9,8 @@ import { CustomersPage } from '@/features/customers/components/CustomersPage'
 import { CustomerFormPage } from '@/features/customers/components/CustomerFormPage'
 import { CustomerDetailPage } from '@/features/customers/components/CustomerDetailPage'
 import { CollectPage } from '@/features/payments/components/CollectPage'
+import { DashboardPage } from '@/features/dashboard/components/DashboardPage'
+import { CapitalPage } from '@/features/dashboard/components/CapitalPage'
 
 function Placeholder({ title }: { title: string }) {
   return <EmptyState title={title} description="هذه الصفحة قيد الإنشاء" />
@@ -22,7 +24,7 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          { index: true, element: <RoleLanding owner={<Placeholder title="الرئيسية" />} /> },
+          { index: true, element: <RoleLanding owner={<DashboardPage />} /> },
           { path: 'customers', element: <CustomersPage /> },
           { path: 'customers/:id', element: <CustomerDetailPage /> },
           { path: 'collect', element: <CollectPage /> },
@@ -32,7 +34,7 @@ export const router = createBrowserRouter([
               { path: 'customers/new', element: <CustomerFormPage mode="create" /> },
               { path: 'customers/:id/edit', element: <CustomerFormPage mode="edit" /> },
               { path: 'suppliers', element: <Placeholder title="التجار" /> },
-              { path: 'capital', element: <Placeholder title="رأس المال" /> },
+              { path: 'capital', element: <CapitalPage /> },
               { path: 'team', element: <TeamPage /> },
             ],
           },

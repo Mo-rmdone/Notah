@@ -13,6 +13,13 @@ const monthFormatter = new Intl.DateTimeFormat('ar-EG', { month: 'long', year: '
 
 const timeFormatter = new Intl.DateTimeFormat('ar-EG', { hour: 'numeric', minute: '2-digit' })
 
+const compactFormatter = new Intl.NumberFormat('ar-EG', {
+  notation: 'compact',
+  maximumFractionDigits: 1,
+})
+
+const dayMonthFormatter = new Intl.DateTimeFormat('ar-EG', { day: 'numeric', month: 'short' })
+
 export function formatEGP(value: number | string | null | undefined): string {
   const n = typeof value === 'string' ? Number(value) : (value ?? 0)
   return egpFormatter.format(Number.isFinite(n) ? n : 0)
@@ -29,6 +36,14 @@ export function formatMonth(value: string | Date): string {
 
 export function formatTime(value: string | Date): string {
   return timeFormatter.format(typeof value === 'string' ? new Date(value) : value)
+}
+
+export function formatCompactNumber(value: number): string {
+  return compactFormatter.format(value)
+}
+
+export function formatDayMonth(value: string | Date): string {
+  return dayMonthFormatter.format(typeof value === 'string' ? new Date(value) : value)
 }
 
 /** yyyy-mm-dd for <input type="date"> defaults, in local time. */
