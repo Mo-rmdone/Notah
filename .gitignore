@@ -16,9 +16,15 @@ dist-ssr
 .wrangler/
 
 # Env — بيانات الاتصال بـ Supabase لا تُرفع للمستودع
+# استثناء: .env.production يحوي عنوان المشروع والمفتاح العام فقط، وكلاهما يظهر
+# داخل حزمة JavaScript على أي حال.
+# Exception: .env.production holds only the project URL and the public anon key,
+# both of which ship inside the client bundle anyway. Never add a service_role
+# key to it.
 .env
 .env.*
 !.env.example
+!.env.production
 
 # Editor directories and files
 .vscode/*
