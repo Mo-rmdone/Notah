@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Wrangler local state and build cache
+.wrangler/
+
 # Env — بيانات الاتصال بـ Supabase لا تُرفع للمستودع
 .env
 .env.*
