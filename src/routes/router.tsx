@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { NotFound } from '@/components/layout/NotFound'
-import { EmptyState } from '@/components/shared/states'
 import { LoginPage } from '@/features/auth/components/LoginPage'
 import { TeamPage } from '@/features/auth/components/TeamPage'
 import { RequireAuth, RequireOwner, RoleLanding } from '@/features/auth/components/guards'
@@ -11,10 +10,8 @@ import { CustomerDetailPage } from '@/features/customers/components/CustomerDeta
 import { CollectPage } from '@/features/payments/components/CollectPage'
 import { DashboardPage } from '@/features/dashboard/components/DashboardPage'
 import { CapitalPage } from '@/features/dashboard/components/CapitalPage'
-
-function Placeholder({ title }: { title: string }) {
-  return <EmptyState title={title} description="هذه الصفحة قيد الإنشاء" />
-}
+import { SuppliersPage } from '@/features/suppliers/components/SuppliersPage'
+import { SupplierDetailPage } from '@/features/suppliers/components/SupplierDetailPage'
 
 export const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
@@ -33,7 +30,8 @@ export const router = createBrowserRouter([
             children: [
               { path: 'customers/new', element: <CustomerFormPage mode="create" /> },
               { path: 'customers/:id/edit', element: <CustomerFormPage mode="edit" /> },
-              { path: 'suppliers', element: <Placeholder title="التجار" /> },
+              { path: 'suppliers', element: <SuppliersPage /> },
+              { path: 'suppliers/:id', element: <SupplierDetailPage /> },
               { path: 'capital', element: <CapitalPage /> },
               { path: 'team', element: <TeamPage /> },
             ],
