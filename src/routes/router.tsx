@@ -8,6 +8,7 @@ import { RequireAuth, RequireOwner, RoleLanding } from '@/features/auth/componen
 import { CustomersPage } from '@/features/customers/components/CustomersPage'
 import { CustomerFormPage } from '@/features/customers/components/CustomerFormPage'
 import { CustomerDetailPage } from '@/features/customers/components/CustomerDetailPage'
+import { CollectPage } from '@/features/payments/components/CollectPage'
 
 function Placeholder({ title }: { title: string }) {
   return <EmptyState title={title} description="هذه الصفحة قيد الإنشاء" />
@@ -24,7 +25,7 @@ export const router = createBrowserRouter([
           { index: true, element: <RoleLanding owner={<Placeholder title="الرئيسية" />} /> },
           { path: 'customers', element: <CustomersPage /> },
           { path: 'customers/:id', element: <CustomerDetailPage /> },
-          { path: 'collect', element: <Placeholder title="تسجيل دفعة" /> },
+          { path: 'collect', element: <CollectPage /> },
           {
             element: <RequireOwner />,
             children: [

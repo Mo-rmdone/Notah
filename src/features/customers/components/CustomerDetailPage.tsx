@@ -23,6 +23,9 @@ import {
   useNationalIdPhoto,
   useSetCustomerArchived,
 } from '@/features/customers/hooks/useCustomers'
+import { AddPaymentDialog } from '@/features/payments/components/AddPaymentDialog'
+import { PaymentHistory } from '@/features/payments/components/PaymentHistory'
+import { PerformanceWidget } from '@/features/payments/components/PerformanceWidget'
 import { categoryLabels, legalStatusLabels } from '@/lib/labels'
 import { formatDate, formatEGP } from '@/lib/format'
 import { cn } from '@/lib/utils'
@@ -48,17 +51,20 @@ function CustomerDetail({ customer }: { customer: Tables<'customers'> }) {
         title={customer.full_name}
         description={`(${customer.known_as})`}
         actions={
-          isOwner ? (
-            <>
-              <Button variant="outline" asChild>
-                <Link to={`/customers/${customer.id}/edit`}>
-                  <Pencil />
-                  تعديل
-                </Link>
-              </Button>
-              <ArchiveButton customer={customer} />
-            </>
-          ) : null
+          <>
+            {!customer.archived_at ? <AddPaymentDialog customer={customer} /> : null}
+            {isOwner ? (
+              <>
+                <Button variant="outline" asChild>
+                  <Link to={`/customers/${customer.id}/edit`}>
+                    <Pencil />
+                    تعديل
+                  </Link>
+                </Button>
+                <ArchiveButton customer={customer} />
+              </>
+            ) : null}
+          </>
         }
       />
 
@@ -74,6 +80,10 @@ function CustomerDetail({ customer }: { customer: Tables<'customers'> }) {
       </div>
 
       <FinancialSummary customer={customer} />
+
+      <PerformanceWidget customerId={customer.id} />
+
+      <PaymentHistory customerId={customer.id} />
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
