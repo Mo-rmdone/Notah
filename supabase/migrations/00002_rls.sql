@@ -134,5 +134,15 @@ on public.capital_entries for all to authenticated
 using (private.is_owner())
 with check (private.is_owner());
 
+-- ---------------------------------------------------------------------------
+-- المنح على مستوى الجدول · table-level grants
+-- RLS يحكم الصفوف، لكن الدور يحتاج صلاحية على الجدول أصلًا. مشاريع Supabase
+-- الحديثة لا تكشف الجداول الجديدة تلقائيًا، لذا نمنح الصلاحيات صراحة.
+-- RLS governs rows, but the role still needs table privileges. Newer Supabase
+-- projects no longer auto-expose new tables, so grant explicitly rather than
+-- depending on default privileges.
+-- ---------------------------------------------------------------------------
+grant select, insert, update, delete on all tables in schema public to authenticated;
+
 -- No anon access at all.
 revoke all on all tables in schema public from anon;

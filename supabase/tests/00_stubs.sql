@@ -48,4 +48,7 @@ $$;
 
 grant usage on schema public, auth, storage to authenticated, anon;
 grant all on all tables in schema storage to authenticated;
-alter default privileges in schema public grant all on tables to authenticated;
+
+-- Deliberately NO default-privilege grant on public tables: newer Supabase
+-- projects don't auto-expose new tables either, so the migrations must issue
+-- their own GRANTs. Leaving this out is what makes the harness catch it.

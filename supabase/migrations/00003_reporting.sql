@@ -161,3 +161,16 @@ as $$
   where p.payment_date = current_date
   order by p.created_at desc;
 $$;
+
+-- استدعاء الدوال من التطبيق · callable from the app (RLS still applies inside)
+grant execute on function public.dashboard_summary() to authenticated;
+grant execute on function public.collections_by_category() to authenticated;
+grant execute on function public.daily_collections(integer) to authenticated;
+grant execute on function public.customer_performance(uuid) to authenticated;
+grant execute on function public.today_payments() to authenticated;
+
+revoke execute on function public.dashboard_summary() from anon;
+revoke execute on function public.collections_by_category() from anon;
+revoke execute on function public.daily_collections(integer) from anon;
+revoke execute on function public.customer_performance(uuid) from anon;
+revoke execute on function public.today_payments() from anon;

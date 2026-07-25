@@ -11,7 +11,10 @@ const knownErrors: Array<{ match: string; message: string }> = [
   { match: 'duplicate key', message: 'هذا السجل موجود بالفعل' },
   { match: 'row-level security', message: 'ليست لديك صلاحية لتنفيذ هذه العملية' },
   { match: 'Invalid login credentials', message: 'بيانات الدخول غير صحيحة' },
-  { match: 'Failed to fetch', message: 'تعذر الاتصال بالخادم — تحقق من اتصالك بالإنترنت' },
+  {
+    match: 'Failed to fetch',
+    message: 'تعذر الاتصال بالخادم — تحقق من إعدادات Supabase ومن اتصالك بالإنترنت',
+  },
 ]
 
 export function arabicErrorMessage(error: unknown): string {
