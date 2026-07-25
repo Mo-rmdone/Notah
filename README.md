@@ -40,6 +40,7 @@ Cloudflare Pages
    supabase/migrations/00002_rls.sql         -- سياسات الأمان · RLS policies
    supabase/migrations/00003_reporting.sql   -- دوال التقارير · reporting RPCs
    supabase/migrations/00004_storage.sql     -- مخازن الملفات · storage buckets
+   supabase/migrations/00005_harden_trigger_functions.sql  -- تقييد دوال المحفزات
    ```
 
    أو باستخدام Supabase CLI · or with the CLI:
