@@ -29,9 +29,21 @@ import {
   type CustomerFilters,
 } from '@/features/customers/schemas/customer'
 import { categoryLabels, categoryOptions, legalStatusLabels } from '@/lib/labels'
-import { formatEGP } from '@/lib/format'
+import { formatEGP, sumMoney } from '@/lib/format'
 import { useDebouncedValue } from '@/lib/useDebounce'
 import { cn } from '@/lib/utils'
+import type { CustomerWithContracts } from '@/features/customers/api/customers'
+import type { Enums } from '@/types/database.types'
+
+// تجميع للعرض فقط — كل متبقٍ مفرد محسوب في قاعدة البيانات.
+// Display-only aggregation; every individual balance came from Postgres.
+function totalRemaining(customer: CustomerWithContracts): number {
+  return sumMoney(customer.contracts.filter((c) => !c.archived_at).map((c) => c.remaining_amount))
+}
+
+function openCategories(customer: CustomerWithContracts): Array<Enums<'product_category'>> {
+  return [...new Set(customer.contracts.filter((c) => !c.archived_at).map((c) => c.category))]
+}
 
 export function CustomersPage() {
   const navigate = useNavigate()
@@ -165,15 +177,29 @@ export function CustomersPage() {
                     {customer.national_id}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    <Badge variant="secondary">{categoryLabels[customer.category]}</Badge>
+                    <div className="flex flex-wrap gap-1">
+                      {openCategories(customer).map((category) => (
+                        <Badge key={category} variant="secondary">
+                          {categoryLabels[category]}
+                        </Badge>
+                      ))}
+                      {openCategories(customer).length === 0 ? (
+                        <span className="text-xs text-muted-foreground">—</span>
+                      ) : null}
+                    </div>
                   </TableCell>
                   <TableCell
                     className={cn(
                       'tabular font-semibold',
-                      customer.remaining_amount === 0 && 'text-status-paid',
+                      totalRemaining(customer) === 0 && 'text-status-paid',
                     )}
                   >
-                    {formatEGP(customer.remaining_amount)}
+                    {formatEGP(totalRemaining(customer))}
+                    {customer.contracts.length > 1 ? (
+                      <span className="ms-1 text-xs font-normal text-muted-foreground">
+                        ({customer.contracts.length} عقود)
+                      </span>
+                    ) : null}
                   </TableCell>
                   <TableCell>
                     <Badge variant={customer.legal_status === 'clean' ? 'paid' : 'missed'}>

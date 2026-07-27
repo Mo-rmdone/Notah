@@ -1,345 +1,385 @@
-// Hand-written to match supabase/migrations exactly.
-// Regenerate against a live project with:
+// Generated from the live Supabase schema. Do not hand-edit.
+// Regenerate after any migration with:
 //   npx supabase gen types typescript --project-id <ref> --schema public > src/types/database.types.ts
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
-export interface Database {
+export type Database = {
+  __InternalSupabase: {
+    PostgrestVersion: '14.5'
+  }
   public: {
     Tables: {
-      profiles: {
+      capital_entries: {
         Row: {
-          id: string
-          full_name: string
-          role: Database['public']['Enums']['user_role']
-          phone: string | null
-          active: boolean
+          amount: number
           created_at: string
+          created_by: string | null
+          entry_date: string
+          entry_type: Database['public']['Enums']['capital_entry_type']
+          id: string
+          note: string | null
+          org_id: string
         }
         Insert: {
-          id: string
-          full_name?: string
-          role?: Database['public']['Enums']['user_role']
-          phone?: string | null
-          active?: boolean
+          amount: number
           created_at?: string
+          created_by?: string | null
+          entry_date?: string
+          entry_type: Database['public']['Enums']['capital_entry_type']
+          id?: string
+          note?: string | null
+          org_id?: string
         }
         Update: {
-          id?: string
-          full_name?: string
-          role?: Database['public']['Enums']['user_role']
-          phone?: string | null
-          active?: boolean
+          amount?: number
           created_at?: string
+          created_by?: string | null
+          entry_date?: string
+          entry_type?: Database['public']['Enums']['capital_entry_type']
+          id?: string
+          note?: string | null
+          org_id?: string
+        }
+        Relationships: []
+      }
+      contracts: {
+        Row: {
+          archived_at: string | null
+          category: Database['public']['Enums']['product_category']
+          contract_start_date: string
+          created_at: string
+          created_by: string | null
+          customer_id: string
+          down_payment: number
+          id: string
+          monthly_installment: number
+          note: string | null
+          org_id: string
+          payment_window: Database['public']['Enums']['payment_window']
+          remaining_amount: number
+          total_amount: number
+          trust_receipt: boolean
+        }
+        Insert: {
+          archived_at?: string | null
+          category: Database['public']['Enums']['product_category']
+          contract_start_date: string
+          created_at?: string
+          created_by?: string | null
+          customer_id: string
+          down_payment?: number
+          id?: string
+          monthly_installment: number
+          note?: string | null
+          org_id?: string
+          payment_window?: Database['public']['Enums']['payment_window']
+          remaining_amount?: number
+          total_amount: number
+          trust_receipt?: boolean
+        }
+        Update: {
+          archived_at?: string | null
+          category?: Database['public']['Enums']['product_category']
+          contract_start_date?: string
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string
+          down_payment?: number
+          id?: string
+          monthly_installment?: number
+          note?: string | null
+          org_id?: string
+          payment_window?: Database['public']['Enums']['payment_window']
+          remaining_amount?: number
+          total_amount?: number
+          trust_receipt?: boolean
+        }
+        Relationships: []
+      }
+      customer_payments: {
+        Row: {
+          amount: number
+          collected_by: string | null
+          contract_id: string
+          created_at: string
+          id: string
+          note: string | null
+          org_id: string
+          payment_date: string
+        }
+        Insert: {
+          amount: number
+          collected_by?: string | null
+          contract_id: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          org_id?: string
+          payment_date?: string
+        }
+        Update: {
+          amount?: number
+          collected_by?: string | null
+          contract_id?: string
+          created_at?: string
+          id?: string
+          note?: string | null
+          org_id?: string
+          payment_date?: string
         }
         Relationships: []
       }
       customers: {
         Row: {
-          id: string
-          full_name: string
-          known_as: string
-          phone: string
-          alt_phone: string | null
-          national_id: string
           address: string
-          category: Database['public']['Enums']['product_category']
-          total_amount: number
-          down_payment: number
-          remaining_amount: number
-          monthly_installment: number
-          guarantor_name: string | null
-          guarantor_relation: string | null
-          guarantor_phone: string | null
-          guarantor_address: string | null
-          trust_receipt: boolean
-          legal_status: Database['public']['Enums']['legal_status']
-          national_id_photo: string | null
+          alt_phone: string | null
           archived_at: string | null
           created_at: string
           created_by: string | null
-        }
-        Insert: {
-          id?: string
           full_name: string
+          guarantor_address: string | null
+          guarantor_name: string | null
+          guarantor_phone: string | null
+          guarantor_relation: string | null
+          id: string
           known_as: string
-          phone: string
-          alt_phone?: string | null
+          legal_status: Database['public']['Enums']['legal_status']
           national_id: string
+          national_id_photo: string | null
+          org_id: string
+          phone: string
+        }
+        Insert: {
           address: string
-          category: Database['public']['Enums']['product_category']
-          total_amount: number
-          down_payment?: number
-          remaining_amount?: number
-          monthly_installment: number
-          guarantor_name?: string | null
-          guarantor_relation?: string | null
-          guarantor_phone?: string | null
-          guarantor_address?: string | null
-          trust_receipt: boolean
-          legal_status?: Database['public']['Enums']['legal_status']
-          national_id_photo?: string | null
-          archived_at?: string | null
-          created_at?: string
-          created_by?: string | null
-        }
-        Update: {
-          id?: string
-          full_name?: string
-          known_as?: string
-          phone?: string
           alt_phone?: string | null
-          national_id?: string
-          address?: string
-          category?: Database['public']['Enums']['product_category']
-          total_amount?: number
-          down_payment?: number
-          remaining_amount?: number
-          monthly_installment?: number
-          guarantor_name?: string | null
-          guarantor_relation?: string | null
-          guarantor_phone?: string | null
-          guarantor_address?: string | null
-          trust_receipt?: boolean
-          legal_status?: Database['public']['Enums']['legal_status']
-          national_id_photo?: string | null
           archived_at?: string | null
           created_at?: string
           created_by?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'customers_created_by_fkey'
-            columns: ['created_by']
-            isOneToOne: false
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      customer_payments: {
-        Row: {
-          id: string
-          customer_id: string
-          amount: number
-          payment_date: string
-          collected_by: string | null
-          note: string | null
-          created_at: string
-        }
-        Insert: {
+          full_name: string
+          guarantor_address?: string | null
+          guarantor_name?: string | null
+          guarantor_phone?: string | null
+          guarantor_relation?: string | null
           id?: string
-          customer_id: string
-          amount: number
-          payment_date?: string
-          collected_by?: string | null
-          note?: string | null
-          created_at?: string
+          known_as: string
+          legal_status?: Database['public']['Enums']['legal_status']
+          national_id: string
+          national_id_photo?: string | null
+          org_id?: string
+          phone: string
         }
         Update: {
-          id?: string
-          customer_id?: string
-          amount?: number
-          payment_date?: string
-          collected_by?: string | null
-          note?: string | null
-          created_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'customer_payments_customer_id_fkey'
-            columns: ['customer_id']
-            isOneToOne: false
-            referencedRelation: 'customers'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'customer_payments_collected_by_fkey'
-            columns: ['collected_by']
-            isOneToOne: false
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      suppliers: {
-        Row: {
-          id: string
-          name: string
-          trade_type: Database['public']['Enums']['product_category']
-          phone_1: string | null
-          phone_2: string | null
-          total_owed: number
-          remaining_amount: number
-          monthly_payment: number
-          created_at: string
-          created_by: string | null
-        }
-        Insert: {
-          id?: string
-          name: string
-          trade_type: Database['public']['Enums']['product_category']
-          phone_1?: string | null
-          phone_2?: string | null
-          total_owed?: number
-          remaining_amount?: number
-          monthly_payment?: number
+          address?: string
+          alt_phone?: string | null
+          archived_at?: string | null
           created_at?: string
           created_by?: string | null
+          full_name?: string
+          guarantor_address?: string | null
+          guarantor_name?: string | null
+          guarantor_phone?: string | null
+          guarantor_relation?: string | null
+          id?: string
+          known_as?: string
+          legal_status?: Database['public']['Enums']['legal_status']
+          national_id?: string
+          national_id_photo?: string | null
+          org_id?: string
+          phone?: string
+        }
+        Relationships: []
+      }
+      organizations: {
+        Row: {
+          address: string | null
+          created_at: string
+          id: string
+          max_collectors: number
+          name: string
+          owner_id: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          id?: string
+          max_collectors?: number
+          name: string
+          owner_id: string
         }
         Update: {
+          address?: string | null
+          created_at?: string
           id?: string
+          max_collectors?: number
           name?: string
-          trade_type?: Database['public']['Enums']['product_category']
-          phone_1?: string | null
-          phone_2?: string | null
-          total_owed?: number
-          remaining_amount?: number
-          monthly_payment?: number
-          created_at?: string
-          created_by?: string | null
+          owner_id?: string
         }
-        Relationships: [
-          {
-            foreignKeyName: 'suppliers_created_by_fkey'
-            columns: ['created_by']
-            isOneToOne: false
-            referencedRelation: 'profiles'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
-      supplier_payments: {
+      profiles: {
         Row: {
-          id: string
-          supplier_id: string
-          amount: number
-          payment_date: string
-          note: string | null
+          active: boolean
           created_at: string
-          created_by: string | null
+          full_name: string
+          id: string
+          org_id: string
+          phone: string | null
+          role: Database['public']['Enums']['user_role']
         }
         Insert: {
-          id?: string
-          supplier_id: string
-          amount: number
-          payment_date?: string
-          note?: string | null
+          active?: boolean
           created_at?: string
-          created_by?: string | null
+          full_name?: string
+          id: string
+          org_id: string
+          phone?: string | null
+          role?: Database['public']['Enums']['user_role']
         }
         Update: {
-          id?: string
-          supplier_id?: string
-          amount?: number
-          payment_date?: string
-          note?: string | null
+          active?: boolean
           created_at?: string
-          created_by?: string | null
+          full_name?: string
+          id?: string
+          org_id?: string
+          phone?: string | null
+          role?: Database['public']['Enums']['user_role']
         }
-        Relationships: [
-          {
-            foreignKeyName: 'supplier_payments_supplier_id_fkey'
-            columns: ['supplier_id']
-            isOneToOne: false
-            referencedRelation: 'suppliers'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       supplier_invoices: {
         Row: {
-          id: string
-          supplier_id: string
-          invoice_number: string
           amount: number
-          invoice_date: string
+          created_at: string
+          created_by: string | null
           file_path: string | null
-          note: string | null
-          created_at: string
-          created_by: string | null
-        }
-        Insert: {
-          id?: string
-          supplier_id: string
-          invoice_number: string
-          amount: number
-          invoice_date?: string
-          file_path?: string | null
-          note?: string | null
-          created_at?: string
-          created_by?: string | null
-        }
-        Update: {
-          id?: string
-          supplier_id?: string
-          invoice_number?: string
-          amount?: number
-          invoice_date?: string
-          file_path?: string | null
-          note?: string | null
-          created_at?: string
-          created_by?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'supplier_invoices_supplier_id_fkey'
-            columns: ['supplier_id']
-            isOneToOne: false
-            referencedRelation: 'suppliers'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      capital_entries: {
-        Row: {
           id: string
-          amount: number
-          entry_type: Database['public']['Enums']['capital_entry_type']
+          invoice_date: string
+          invoice_number: string
           note: string | null
-          entry_date: string
-          created_at: string
-          created_by: string | null
+          org_id: string
+          supplier_id: string
         }
         Insert: {
-          id?: string
           amount: number
-          entry_type: Database['public']['Enums']['capital_entry_type']
-          note?: string | null
-          entry_date?: string
           created_at?: string
           created_by?: string | null
+          file_path?: string | null
+          id?: string
+          invoice_date?: string
+          invoice_number: string
+          note?: string | null
+          org_id?: string
+          supplier_id: string
         }
         Update: {
-          id?: string
           amount?: number
-          entry_type?: Database['public']['Enums']['capital_entry_type']
-          note?: string | null
-          entry_date?: string
           created_at?: string
           created_by?: string | null
+          file_path?: string | null
+          id?: string
+          invoice_date?: string
+          invoice_number?: string
+          note?: string | null
+          org_id?: string
+          supplier_id?: string
+        }
+        Relationships: []
+      }
+      supplier_payments: {
+        Row: {
+          amount: number
+          created_at: string
+          created_by: string | null
+          id: string
+          note: string | null
+          org_id: string
+          payment_date: string
+          supplier_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          note?: string | null
+          org_id?: string
+          payment_date?: string
+          supplier_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          note?: string | null
+          org_id?: string
+          payment_date?: string
+          supplier_id?: string
+        }
+        Relationships: []
+      }
+      suppliers: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          monthly_payment: number
+          name: string
+          org_id: string
+          phone_1: string | null
+          phone_2: string | null
+          remaining_amount: number
+          total_owed: number
+          trade_type: Database['public']['Enums']['product_category']
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          monthly_payment?: number
+          name: string
+          org_id?: string
+          phone_1?: string | null
+          phone_2?: string | null
+          remaining_amount?: number
+          total_owed?: number
+          trade_type: Database['public']['Enums']['product_category']
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          monthly_payment?: number
+          name?: string
+          org_id?: string
+          phone_1?: string | null
+          phone_2?: string | null
+          remaining_amount?: number
+          total_owed?: number
+          trade_type?: Database['public']['Enums']['product_category']
         }
         Relationships: []
       }
     }
-    Views: Record<string, never>
+    Views: {
+      [_ in never]: never
+    }
     Functions: {
-      dashboard_summary: {
-        Args: Record<PropertyKey, never>
-        Returns: {
-          total_capital: number
-          total_collected: number
-          collected_today: number
-          collected_this_month: number
-          total_outstanding: number
-          total_owed_suppliers: number
-        }[]
-      }
       collections_by_category: {
-        Args: Record<PropertyKey, never>
+        Args: Record<string, never>
         Returns: {
           category: Database['public']['Enums']['product_category']
           total: number
+        }[]
+      }
+      customer_performance: {
+        Args: { p_customer_id: string }
+        Returns: {
+          expected: number
+          month_start: string
+          paid: number
+          status: string
         }[]
       }
       daily_collections: {
@@ -349,43 +389,148 @@ export interface Database {
           total: number
         }[]
       }
-      customer_performance: {
-        Args: { p_customer_id: string }
+      dashboard_summary: {
+        Args: Record<string, never>
         Returns: {
-          month_start: string
-          expected: number
-          paid: number
-          status: string
+          collected_this_month: number
+          collected_today: number
+          total_capital: number
+          total_collected: number
+          total_outstanding: number
+          total_owed_suppliers: number
         }[]
       }
       today_payments: {
-        Args: Record<PropertyKey, never>
+        Args: Record<string, never>
         Returns: {
-          id: string
-          customer_id: string
-          customer_name: string
           amount: number
           collector_name: string
           created_at: string
+          customer_id: string
+          customer_name: string
+          id: string
         }[]
       }
     }
     Enums: {
-      user_role: 'owner' | 'collector'
-      product_category: 'household' | 'appliances' | 'furniture'
-      legal_status: 'clean' | 'in_litigation'
       capital_entry_type: 'deposit' | 'withdrawal'
+      legal_status: 'clean' | 'in_litigation'
+      payment_window: 'early' | 'mid' | 'late'
+      product_category: 'household' | 'appliances' | 'furniture'
+      user_role: 'owner' | 'collector'
     }
-    CompositeTypes: Record<string, never>
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
 }
 
-export type Tables<T extends keyof Database['public']['Tables']> =
-  Database['public']['Tables'][T]['Row']
-export type TablesInsert<T extends keyof Database['public']['Tables']> =
-  Database['public']['Tables'][T]['Insert']
-export type TablesUpdate<T extends keyof Database['public']['Tables']> =
-  Database['public']['Tables'][T]['Update']
-export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T]
-export type Functions<T extends keyof Database['public']['Functions']> =
-  Database['public']['Functions'][T]['Returns']
+type DatabaseWithoutInternals = Omit<Database, '__InternalSupabase'>
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, 'public'>]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Views'])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema['Tables'] & DefaultSchema['Views'])
+    ? (DefaultSchema['Tables'] & DefaultSchema['Views'])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema['Tables']
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema['Tables']
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables']
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions['schema']]['Tables'][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema['Tables']
+    ? DefaultSchema['Tables'][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema['Enums']
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums']
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions['schema']]['Enums'][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema['Enums']
+    ? DefaultSchema['Enums'][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export const Constants = {
+  public: {
+    Enums: {
+      capital_entry_type: ['deposit', 'withdrawal'],
+      legal_status: ['clean', 'in_litigation'],
+      payment_window: ['early', 'mid', 'late'],
+      product_category: ['household', 'appliances', 'furniture'],
+      user_role: ['owner', 'collector'],
+    },
+  },
+} as const

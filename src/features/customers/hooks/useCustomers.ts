@@ -9,6 +9,7 @@ import {
   updateCustomer,
 } from '@/features/customers/api/customers'
 import type { CustomerFilters, CustomerInput } from '@/features/customers/schemas/customer'
+import type { ContractInput } from '@/features/contracts/schemas/contract'
 import { arabicErrorMessage } from '@/lib/errors'
 
 export function useCustomers(filters: CustomerFilters) {
@@ -29,11 +30,19 @@ export function useCustomer(id: string | undefined) {
 export function useCreateCustomer() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: ({ input, photo }: { input: CustomerInput; photo: File | null }) =>
-      createCustomer(input, photo),
+    mutationFn: ({
+      input,
+      contract,
+      photo,
+    }: {
+      input: CustomerInput
+      contract: ContractInput
+      photo: File | null
+    }) => createCustomer(input, contract, photo),
     onSuccess: () => {
-      toast.success('تم إضافة العميل')
+      toast.success('تم إضافة العميل وعقده الأول')
       void queryClient.invalidateQueries({ queryKey: ['customers'] })
+      void queryClient.invalidateQueries({ queryKey: ['dashboard'] })
     },
     onError: (error) => toast.error(arabicErrorMessage(error)),
   })

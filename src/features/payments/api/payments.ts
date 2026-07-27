@@ -3,16 +3,26 @@ import type { Database, Tables } from '@/types/database.types'
 
 export interface CustomerPaymentRow extends Tables<'customer_payments'> {
   collector: { full_name: string } | null
+  contract: { id: string; category: Database['public']['Enums']['product_category'] } | null
 }
 
 export type PerformanceMonth =
   Database['public']['Functions']['customer_performance']['Returns'][number]
 
+const PAYMENT_SELECT =
+  '*, collector:profiles!customer_payments_collected_by_fkey(full_name), contract:contracts!inner(id, category, customer_id)'
+
+/**
+ * كل دفعات العميل عبر جميع عقوده. الدفعة صارت مرتبطة بالعقد، فالوصول للعميل يمر
+ * بربط داخلي مع contracts.
+ * Every payment across all of a customer's contracts. Payments now hang off the
+ * contract, so reaching the customer goes through an inner join.
+ */
 export async function listCustomerPayments(customerId: string): Promise<CustomerPaymentRow[]> {
   const { data, error } = await supabase
     .from('customer_payments')
-    .select('*, collector:profiles!customer_payments_collected_by_fkey(full_name)')
-    .eq('customer_id', customerId)
+    .select(PAYMENT_SELECT)
+    .eq('contract.customer_id', customerId)
     .order('payment_date', { ascending: false })
     .order('created_at', { ascending: false })
     .returns<CustomerPaymentRow[]>()
@@ -21,7 +31,7 @@ export async function listCustomerPayments(customerId: string): Promise<Customer
 }
 
 export interface AddPaymentPayload {
-  customer_id: string
+  contract_id: string
   amount: number
   payment_date: string
   note: string | null

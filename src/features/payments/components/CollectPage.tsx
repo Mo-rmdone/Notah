@@ -9,9 +9,21 @@ import { EmptyState, ErrorState, LoadingState } from '@/components/shared/states
 import { AddPaymentDialog } from '@/features/payments/components/AddPaymentDialog'
 import { useCustomers } from '@/features/customers/hooks/useCustomers'
 import { legalStatusLabels } from '@/lib/labels'
-import { formatEGP } from '@/lib/format'
+import { formatEGP, sumMoney } from '@/lib/format'
 import { useDebouncedValue } from '@/lib/useDebounce'
 import { cn } from '@/lib/utils'
+import type { CustomerWithContracts } from '@/features/customers/api/customers'
+
+// تجميع للعرض فقط عبر العقود المفتوحة · display-only totals across open contracts
+function openRemaining(customer: CustomerWithContracts): number {
+  return sumMoney(customer.contracts.filter((c) => !c.archived_at).map((c) => c.remaining_amount))
+}
+
+function openInstallment(customer: CustomerWithContracts): number {
+  return sumMoney(
+    customer.contracts.filter((c) => !c.archived_at).map((c) => c.monthly_installment),
+  )
+}
 
 export function CollectPage() {
   const [search, setSearch] = useState('')
@@ -73,20 +85,29 @@ export function CollectPage() {
                     <span
                       className={cn(
                         'tabular font-bold',
-                        customer.remaining_amount === 0 ? 'text-status-paid' : 'text-primary',
+                        openRemaining(customer) === 0 ? 'text-status-paid' : 'text-primary',
                       )}
                     >
-                      المتبقي: {formatEGP(customer.remaining_amount)}
+                      المتبقي: {formatEGP(openRemaining(customer))}
                     </span>
                     <span className="text-xs text-muted-foreground">
-                      القسط: {formatEGP(customer.monthly_installment)}
+                      القسط: {formatEGP(openInstallment(customer))}
                     </span>
+                    {customer.contracts.filter((c) => !c.archived_at).length > 1 ? (
+                      <span className="text-xs text-muted-foreground">
+                        ({customer.contracts.filter((c) => !c.archived_at).length} عقود)
+                      </span>
+                    ) : null}
                     {customer.legal_status === 'in_litigation' ? (
                       <Badge variant="missed">{legalStatusLabels.in_litigation}</Badge>
                     ) : null}
                   </div>
                 </div>
-                <AddPaymentDialog customer={customer} />
+                <AddPaymentDialog
+                  customerId={customer.id}
+                  customerName={customer.full_name}
+                  contracts={customer.contracts}
+                />
               </CardContent>
             </Card>
           ))}

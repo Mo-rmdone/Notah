@@ -26,8 +26,10 @@ import {
 import { AddPaymentDialog } from '@/features/payments/components/AddPaymentDialog'
 import { PaymentHistory } from '@/features/payments/components/PaymentHistory'
 import { PerformanceWidget } from '@/features/payments/components/PerformanceWidget'
-import { categoryLabels, legalStatusLabels } from '@/lib/labels'
-import { formatDate, formatEGP } from '@/lib/format'
+import { ContractsSection } from '@/features/contracts/components/ContractsSection'
+import { useCustomerContracts } from '@/features/contracts/hooks/useContracts'
+import { legalStatusLabels } from '@/lib/labels'
+import { formatDate, formatEGP, sumMoney } from '@/lib/format'
 import { cn } from '@/lib/utils'
 import type { Tables } from '@/types/database.types'
 
@@ -43,6 +45,7 @@ export function CustomerDetailPage() {
 
 function CustomerDetail({ customer }: { customer: Tables<'customers'> }) {
   const { data: profile } = useProfile()
+  const { data: contracts } = useCustomerContracts(customer.id)
   const isOwner = profile?.role === 'owner'
 
   return (
@@ -52,7 +55,13 @@ function CustomerDetail({ customer }: { customer: Tables<'customers'> }) {
         description={`(${customer.known_as})`}
         actions={
           <>
-            {!customer.archived_at ? <AddPaymentDialog customer={customer} /> : null}
+            {!customer.archived_at ? (
+              <AddPaymentDialog
+                customerId={customer.id}
+                customerName={customer.full_name}
+                contracts={contracts ?? []}
+              />
+            ) : null}
             {isOwner ? (
               <>
                 <Button variant="outline" asChild>
@@ -69,17 +78,20 @@ function CustomerDetail({ customer }: { customer: Tables<'customers'> }) {
       />
 
       <div className="flex flex-wrap gap-2">
-        <Badge variant="secondary">{categoryLabels[customer.category]}</Badge>
         <Badge variant={customer.legal_status === 'clean' ? 'paid' : 'missed'}>
           {legalStatusLabels[customer.legal_status]}
-        </Badge>
-        <Badge variant={customer.trust_receipt ? 'paid' : 'partial'}>
-          {customer.trust_receipt ? 'يوجد وصل أمانة' : 'بدون وصل أمانة'}
         </Badge>
         {customer.archived_at ? <Badge variant="outline">مؤرشف</Badge> : null}
       </div>
 
-      <FinancialSummary customer={customer} />
+      <FinancialSummary contracts={contracts ?? []} />
+
+      <ContractsSection
+        customerId={customer.id}
+        customerName={customer.full_name}
+        isOwner={isOwner}
+        customerArchived={!!customer.archived_at}
+      />
 
       <PerformanceWidget customerId={customer.id} />
 
@@ -152,12 +164,24 @@ function CustomerDetail({ customer }: { customer: Tables<'customers'> }) {
   )
 }
 
-function FinancialSummary({ customer }: { customer: Tables<'customers'> }) {
+/**
+ * الإجمالي عبر كل عقود العميل. الجمع هنا للعرض فقط — كل رقم مفرد محسوب أصلًا في
+ * قاعدة البيانات، ولا يُتخذ قرار بناءً على هذا التجميع.
+ * Totals across all of a customer's contracts. The addition is display-only:
+ * every individual figure was computed by Postgres, and nothing decides state
+ * from this aggregate.
+ */
+function FinancialSummary({ contracts }: { contracts: Tables<'contracts'>[] }) {
+  const open = contracts.filter((c) => !c.archived_at)
+  const remaining = sumMoney(open.map((c) => c.remaining_amount))
   const items = [
-    { label: 'الإجمالي', value: customer.total_amount },
-    { label: 'المقدم', value: customer.down_payment },
-    { label: 'المتبقي', value: customer.remaining_amount, highlight: true },
-    { label: 'القسط الشهري', value: customer.monthly_installment },
+    { label: 'إجمالي العقود', value: sumMoney(contracts.map((c) => c.total_amount)) },
+    { label: 'إجمالي المقدم', value: sumMoney(contracts.map((c) => c.down_payment)) },
+    { label: 'المتبقي', value: remaining, highlight: true },
+    {
+      label: 'القسط الشهري',
+      value: sumMoney(open.map((c) => c.monthly_installment)),
+    },
   ]
   return (
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
@@ -168,8 +192,7 @@ function FinancialSummary({ customer }: { customer: Tables<'customers'> }) {
             <p
               className={cn(
                 'mt-1 text-lg font-bold tabular',
-                item.highlight &&
-                  (customer.remaining_amount === 0 ? 'text-status-paid' : 'text-primary'),
+                item.highlight && (remaining === 0 ? 'text-status-paid' : 'text-primary'),
               )}
             >
               {formatEGP(item.value)}

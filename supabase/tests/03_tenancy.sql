@@ -54,10 +54,18 @@ begin
 end;
 $$;
 
-insert into storage.objects (bucket_id, name) values
-  ('national-ids', current_setting('fx.org1') || '/card-a.jpg'),
-  ('national-ids', current_setting('fx.org2') || '/card-b.jpg'),
-  ('supplier-invoices', current_setting('fx.org1') || '/inv-a.pdf');
+-- المسار يبدأ بمعرّف السجل الأب (العميل/التاجر)، والسياسة تتحقق أن هذا السجل
+-- يخص مؤسسة المستخدم — انظر 00011.
+-- Paths start with the parent row's id; the policy checks that the parent
+-- belongs to the caller's org — see 00011.
+insert into storage.objects (bucket_id, name)
+values ('national-ids', current_setting('fx.cust1') || '/card.jpg');
+
+insert into storage.objects (bucket_id, name)
+select 'supplier-invoices', s.id::text || '/inv.pdf'
+from public.suppliers s
+order by created_at
+limit 1;
 
 \set QUIET off
 
@@ -91,6 +99,12 @@ begin
 
   insert into public.capital_entries (amount, entry_type, entry_date)
   values (10000, 'deposit', current_date);
+
+  -- الرفع يمر عبر السياسة نفسها: العميل يجب أن يكون من مؤسسة الرافع.
+  -- The upload goes through the policy itself: the customer must be in the
+  -- uploader's own org.
+  insert into storage.objects (bucket_id, name)
+  values ('national-ids', v_cust::text || '/card.jpg');
 end;
 $$;
 

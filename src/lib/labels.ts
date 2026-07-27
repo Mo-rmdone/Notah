@@ -16,6 +16,17 @@ export const capitalEntryLabels: Record<Enums<'capital_entry_type'>, string> = {
   withdrawal: 'سحب',
 }
 
+/** نافذة السداد الشهرية — اليوم الذي يُعتبر القسط بعده متأخرًا. */
+export const paymentWindowLabels: Record<Enums<'payment_window'>, string> = {
+  early: 'من ١ إلى ١٠',
+  mid: 'من ١١ إلى ٢٠',
+  late: 'من ٢١ إلى آخر الشهر',
+}
+
+export const paymentWindowOptions = (
+  Object.entries(paymentWindowLabels) as Array<[Enums<'payment_window'>, string]>
+).map(([value, label]) => ({ value, label }))
+
 export const categoryOptions = (
   Object.entries(categoryLabels) as Array<[Enums<'product_category'>, string]>
 ).map(([value, label]) => ({ value, label }))
