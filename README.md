@@ -154,10 +154,43 @@ survive a refresh.
 > Cloudflare Pages, but Workers rejects it at deploy time with "Infinite loop detected" — Workers
 > already normalizes `/index.html`, and `not_found_handling` covers the same case.
 
-## ٦. تحديث أنواع قاعدة البيانات · Regenerating DB types
+## ٦. نشر دوال الحافة · Deploying Edge Functions
 
-`src/types/database.types.ts` مكتوب يدويًا ليطابق ملفات الهجرة. بعد أي تعديل على المخطط:
-Hand-written to match the migrations. After a schema change:
+**هدف نشر ثانٍ مستقل عن Cloudflare.** نشر الواجهة لا ينشر هذه الدوال، ونشرها لا يحدّث الواجهة.
+
+A **second deploy target, independent of Cloudflare.** Shipping the frontend does not ship these
+functions, and vice versa. Deploy them whenever `supabase/functions/**` changes:
+
+```bash
+npx supabase functions deploy manage-collector --project-ref <ref>
+```
+
+| الدالة · Function | ماذا تفعل · What it does |
+|---|---|
+| `manage-collector` | إنشاء حساب محصّل وحذفه · creates and deletes collector accounts |
+
+`manage-collector` تحتاج `service_role`، وهو مفتاح يتجاوز كل سياسات RLS ولا يجوز أن يصل إلى
+المتصفح — لذلك العملية على الخادم. المفتاح **تحقنه المنصة تلقائيًا** في `SUPABASE_SERVICE_ROLE_KEY`،
+فلا سر يُضاف يدويًا ولا يُكتب في أي ملف.
+
+`manage-collector` needs the `service_role` key, which bypasses every RLS policy and must never
+reach the browser — hence a server-side function. The platform injects that key automatically as
+`SUPABASE_SERVICE_ROLE_KEY`, so **there is no secret to add or store anywhere**. Keep `verify_jwt`
+enabled; the function additionally resolves the caller's token to a profile and refuses anyone who
+is not an active owner of the target organization.
+
+عدد المحصّلين محدود بـ `organizations.max_collectors` (افتراضيًا ٢). الحد مفروض في المحفّز
+`enforce_collector_limit` داخل قاعدة البيانات، والدالة تفحصه مسبقًا لتعطي رسالة أوضح فقط.
+
+The collector cap lives in `organizations.max_collectors` (default 2) and is enforced by the
+`enforce_collector_limit` trigger in the database; the function pre-checks it only to return a
+clearer message. Suspending a collector (`active = false`) frees a slot without deleting the
+account, which keeps their name on the payments they already collected.
+
+## ٧. تحديث أنواع قاعدة البيانات · Regenerating DB types
+
+`src/types/database.types.ts` مولَّد من المخطط الحيّ. بعد أي تعديل على المخطط:
+Generated from the live schema. After a schema change:
 
 ```bash
 npx supabase gen types typescript --project-id <ref> --schema public > src/types/database.types.ts
