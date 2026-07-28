@@ -51,6 +51,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { PhoneLink } from '@/components/shared/phone'
 import { EmptyState, ErrorState, TableSkeleton } from '@/components/shared/states'
 import { useProfile, useProfiles, useUpdateProfile } from '@/features/auth/hooks/useProfile'
 import { useCreateCollector, useOrganization, useRemoveCollector } from '@/features/auth/hooks/useTeam'
@@ -134,8 +135,8 @@ export function TeamPage() {
               {profiles.map((profile) => (
                 <TableRow key={profile.id}>
                   <TableCell className="font-semibold">{profile.full_name || '—'}</TableCell>
-                  <TableCell dir="ltr" className="text-end tabular">
-                    {profile.phone ?? '—'}
+                  <TableCell className="text-end">
+                    <PhoneLink phone={profile.phone} />
                   </TableCell>
                   <TableCell>
                     <Badge variant={profile.role === 'owner' ? 'default' : 'secondary'}>

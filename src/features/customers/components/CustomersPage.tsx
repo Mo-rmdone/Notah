@@ -21,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { PhoneLink } from '@/components/shared/phone'
 import { EmptyState, ErrorState, TableSkeleton } from '@/components/shared/states'
 import { useProfile } from '@/features/auth/hooks/useProfile'
 import { useCustomers } from '@/features/customers/hooks/useCustomers'
@@ -170,8 +171,8 @@ export function CustomersPage() {
                     </Link>
                     <p className="text-xs text-muted-foreground">({customer.known_as})</p>
                   </TableCell>
-                  <TableCell dir="ltr" className="hidden text-end tabular sm:table-cell">
-                    {customer.phone}
+                  <TableCell className="hidden text-end sm:table-cell">
+                    <PhoneLink phone={customer.phone} />
                   </TableCell>
                   <TableCell dir="ltr" className="hidden text-end tabular lg:table-cell">
                     {customer.national_id}

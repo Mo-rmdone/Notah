@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { Archive, ArchiveRestore, Pencil, Phone } from 'lucide-react'
+import { Archive, ArchiveRestore, Pencil } from 'lucide-react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import {
   AlertDialog,
@@ -16,6 +16,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import { PhoneLink } from '@/components/shared/phone'
 import { ErrorState, LoadingState } from '@/components/shared/states'
 import { useProfile } from '@/features/auth/hooks/useProfile'
 import {
@@ -104,16 +105,11 @@ function CustomerDetail({ customer }: { customer: Tables<'customers'> }) {
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <InfoRow label="رقم الهاتف">
-              <a dir="ltr" href={`tel:${customer.phone}`} className="tabular text-primary hover:underline">
-                <Phone className="ms-1 inline h-3.5 w-3.5" />
-                {customer.phone}
-              </a>
+              <PhoneLink phone={customer.phone} showCallIcon />
             </InfoRow>
             {customer.alt_phone ? (
               <InfoRow label="هاتف بديل">
-                <a dir="ltr" href={`tel:${customer.alt_phone}`} className="tabular text-primary hover:underline">
-                  {customer.alt_phone}
-                </a>
+                <PhoneLink phone={customer.alt_phone} />
               </InfoRow>
             ) : null}
             <InfoRow label="الرقم القومي">
@@ -139,13 +135,7 @@ function CustomerDetail({ customer }: { customer: Tables<'customers'> }) {
                 ) : null}
                 {customer.guarantor_phone ? (
                   <InfoRow label="الهاتف">
-                    <a
-                      dir="ltr"
-                      href={`tel:${customer.guarantor_phone}`}
-                      className="tabular text-primary hover:underline"
-                    >
-                      {customer.guarantor_phone}
-                    </a>
+                    <PhoneLink phone={customer.guarantor_phone} />
                   </InfoRow>
                 ) : null}
                 {customer.guarantor_address ? (

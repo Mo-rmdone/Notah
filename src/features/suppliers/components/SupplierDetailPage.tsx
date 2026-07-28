@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom'
-import { Download, Pencil, Phone, Trash2 } from 'lucide-react'
+import { Download, Pencil, Trash2 } from 'lucide-react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import {
   AlertDialog,
@@ -23,6 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { PhoneLink } from '@/components/shared/phone'
 import { EmptyState, ErrorState, LoadingState, TableSkeleton } from '@/components/shared/states'
 import { InvoiceDialog } from '@/features/suppliers/components/InvoiceDialog'
 import { SupplierFormDialog } from '@/features/suppliers/components/SupplierFormDialog'
@@ -83,24 +84,9 @@ function SupplierDetail({ supplier }: { supplier: Tables<'suppliers'> }) {
             <p className="text-xs text-muted-foreground">أرقام الهاتف</p>
             <div className="mt-1 space-y-0.5 text-sm font-semibold">
               {supplier.phone_1 ? (
-                <a
-                  dir="ltr"
-                  href={`tel:${supplier.phone_1}`}
-                  className="block tabular text-primary hover:underline"
-                >
-                  <Phone className="ms-1 inline h-3 w-3" />
-                  {supplier.phone_1}
-                </a>
+                <PhoneLink phone={supplier.phone_1} showCallIcon className="flex" />
               ) : null}
-              {supplier.phone_2 ? (
-                <a
-                  dir="ltr"
-                  href={`tel:${supplier.phone_2}`}
-                  className="block tabular text-primary hover:underline"
-                >
-                  {supplier.phone_2}
-                </a>
-              ) : null}
+              {supplier.phone_2 ? <PhoneLink phone={supplier.phone_2} className="flex" /> : null}
               {!supplier.phone_1 && !supplier.phone_2 ? (
                 <span className="text-muted-foreground">—</span>
               ) : null}

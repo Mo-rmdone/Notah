@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/layout/PageHeader'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { PhoneLink } from '@/components/shared/phone'
 import { EmptyState, ErrorState, LoadingState } from '@/components/shared/states'
 import { AddPaymentDialog } from '@/features/payments/components/AddPaymentDialog'
 import { useCustomers } from '@/features/customers/hooks/useCustomers'
@@ -75,11 +76,9 @@ export function CollectPage() {
                   >
                     {customer.full_name}
                   </Link>
-                  <p className="text-xs text-muted-foreground">
-                    ({customer.known_as}) —{' '}
-                    <span dir="ltr" className="tabular">
-                      {customer.phone}
-                    </span>
+                  <p className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <span>({customer.known_as})</span>
+                    <PhoneLink phone={customer.phone} />
                   </p>
                   <div className="mt-1 flex flex-wrap items-center gap-2 text-sm">
                     <span
