@@ -1,7 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { NotFound } from '@/components/layout/NotFound'
+import { HomeRoute } from '@/features/marketing/components/HomeRoute'
 import { LoginPage } from '@/features/auth/components/LoginPage'
+import { RegisterRoute } from '@/features/auth/components/RegisterRoute'
 import { TeamPage } from '@/features/auth/components/TeamPage'
 import { RequireAuth, RequireOwner, RoleLanding } from '@/features/auth/components/guards'
 import { CustomersPage } from '@/features/customers/components/CustomersPage'
@@ -14,6 +16,8 @@ import { SuppliersPage } from '@/features/suppliers/components/SuppliersPage'
 import { SupplierDetailPage } from '@/features/suppliers/components/SupplierDetailPage'
 
 export const router = createBrowserRouter([
+  { path: '/', element: <HomeRoute /> },
+  { path: '/register', element: <RegisterRoute /> },
   { path: '/login', element: <LoginPage /> },
   {
     element: <RequireAuth />,
@@ -21,7 +25,7 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          { index: true, element: <RoleLanding owner={<DashboardPage />} /> },
+          { path: 'dashboard', element: <RoleLanding owner={<DashboardPage />} /> },
           { path: 'customers', element: <CustomersPage /> },
           { path: 'customers/:id', element: <CustomerDetailPage /> },
           { path: 'collect', element: <CollectPage /> },

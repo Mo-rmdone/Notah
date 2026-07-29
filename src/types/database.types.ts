@@ -193,6 +193,7 @@ export type Database = {
       organizations: {
         Row: {
           address: string | null
+          business_size: Database['public']['Enums']['business_size'] | null
           created_at: string
           id: string
           max_collectors: number
@@ -201,6 +202,7 @@ export type Database = {
         }
         Insert: {
           address?: string | null
+          business_size?: Database['public']['Enums']['business_size'] | null
           created_at?: string
           id?: string
           max_collectors?: number
@@ -209,6 +211,7 @@ export type Database = {
         }
         Update: {
           address?: string | null
+          business_size?: Database['public']['Enums']['business_size'] | null
           created_at?: string
           id?: string
           max_collectors?: number
@@ -413,6 +416,7 @@ export type Database = {
       }
     }
     Enums: {
+      business_size: 'individual' | 'small' | 'medium' | 'large'
       capital_entry_type: 'deposit' | 'withdrawal'
       legal_status: 'clean' | 'in_litigation'
       payment_window: 'early' | 'mid' | 'late'
@@ -526,6 +530,7 @@ export type Enums<
 export const Constants = {
   public: {
     Enums: {
+      business_size: ['individual', 'small', 'medium', 'large'],
       capital_entry_type: ['deposit', 'withdrawal'],
       legal_status: ['clean', 'in_litigation'],
       payment_window: ['early', 'mid', 'late'],

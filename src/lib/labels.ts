@@ -6,6 +6,17 @@ export const categoryLabels: Record<Enums<'product_category'>, string> = {
   furniture: 'موبيليا',
 }
 
+export const businessSizeLabels: Record<Enums<'business_size'>, string> = {
+  individual: 'فردي — بائع مستقل بدون فريق',
+  small: 'صغير — محل واحد',
+  medium: 'متوسط — أكثر من نقطة بيع',
+  large: 'كبير — سلسلة محلات أو تجارة جملة',
+}
+
+export const businessSizeOptions = (
+  Object.entries(businessSizeLabels) as Array<[Enums<'business_size'>, string]>
+).map(([value, label]) => ({ value, label }))
+
 export const legalStatusLabels: Record<Enums<'legal_status'>, string> = {
   clean: 'سليم',
   in_litigation: 'يتم التقاضي',

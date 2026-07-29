@@ -19,7 +19,7 @@ import { arabicErrorMessage } from '@/lib/errors'
 import { Button } from '@/components/ui/button'
 
 const navItems = [
-  { to: '/', label: 'الرئيسية', icon: LayoutDashboard, ownerOnly: true, end: true },
+  { to: '/dashboard', label: 'الرئيسية', icon: LayoutDashboard, ownerOnly: true, end: true },
   { to: '/customers', label: 'العملاء', icon: Users, ownerOnly: false, end: false },
   { to: '/collect', label: 'تسجيل دفعة', icon: HandCoins, ownerOnly: false, end: false },
   { to: '/suppliers', label: 'التجار', icon: Store, ownerOnly: true, end: false },

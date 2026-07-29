@@ -16,6 +16,7 @@ const knownErrors: Array<{ match: string; message: string }> = [
   { match: 'duplicate key', message: 'هذا السجل موجود بالفعل' },
   { match: 'row-level security', message: 'ليست لديك صلاحية لتنفيذ هذه العملية' },
   { match: 'Invalid login credentials', message: 'بيانات الدخول غير صحيحة' },
+  { match: 'User already registered', message: 'هذا البريد الإلكتروني مسجّل بالفعل' },
   {
     match: 'Failed to fetch',
     message: 'تعذر الاتصال بالخادم — تحقق من إعدادات Supabase ومن اتصالك بالإنترنت',

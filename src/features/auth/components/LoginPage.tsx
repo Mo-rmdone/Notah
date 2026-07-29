@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -29,7 +29,7 @@ export function LoginPage() {
   })
 
   if (loading) return <LoadingState className="min-h-svh" />
-  if (session) return <Navigate to="/" replace />
+  if (session) return <Navigate to="/dashboard" replace />
 
   const onSubmit = async (values: LoginInput) => {
     try {
@@ -88,6 +88,12 @@ export function LoginPage() {
               </Button>
             </form>
           </Form>
+          <p className="mt-4 text-center text-sm text-muted-foreground">
+            ليس لديك حساب؟{' '}
+            <Link to="/register" className="font-semibold text-primary hover:underline">
+              سجّل الآن
+            </Link>
+          </p>
         </CardContent>
       </Card>
     </div>
