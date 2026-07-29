@@ -24,6 +24,8 @@ const statusStyles: Record<string, string> = {
   missed: 'bg-status-missed-bg text-status-missed',
 }
 
+const capabilities = ['عملاء وعقود', 'تسجيل الدفعات', 'فريق التحصيل', '+']
+
 function heroVariants(reduce: boolean | null): { container: Variants; item: Variants } {
   if (reduce) {
     return {
@@ -48,48 +50,20 @@ export function Hero() {
   const { container, item } = heroVariants(shouldReduceMotion)
 
   return (
-    <section className="mx-auto max-w-6xl px-4 pb-16 pt-14 sm:px-6 sm:pt-20">
-      <motion.div
-        variants={container}
-        initial="hidden"
-        animate="show"
-        className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
-      >
-        <div>
-          <motion.span
-            variants={item}
-            className="inline-block rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground"
-          >
-            لأصحاب محلات التقسيط
-          </motion.span>
-          <motion.h1
-            variants={item}
-            className="mt-4 text-4xl font-extrabold leading-tight text-foreground sm:text-5xl"
-          >
-            إدارة أقساط عملائك
-            <br />
-            من مكان واحد
-          </motion.h1>
-          <motion.p variants={item} className="mt-4 max-w-md text-lg text-muted-foreground">
-            سجّل عملاءك، وتابع التحصيل يوميًا، واعرف حالة كل قسط لحظة بلحظة — بدون دفاتر ورقية
-            ولا حسابات معقدة.
-          </motion.p>
-          <motion.div variants={item} className="mt-8 flex flex-wrap items-center gap-3">
-            <Button asChild size="lg">
-              <Link to="/register">
-                ابدأ مجانًا
-                <ArrowLeft />
-              </Link>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <Link to="/login">تسجيل الدخول</Link>
-            </Button>
-          </motion.div>
-        </div>
-
-        <motion.div variants={item}>
-          <Card className="mx-auto max-w-sm overflow-hidden p-0 shadow-lg">
-            <div className="border-b border-border p-4">
+    <section className="relative overflow-hidden px-4 pb-16 pt-8 sm:px-6">
+      <motion.div variants={container} initial="hidden" animate="show" className="mx-auto max-w-6xl">
+        {/* البطاقة الرئيسية مع توهج خلفي ناعم — صدى بسيط لكرة mdx.so بلا الحاجة لأصول ثلاثية الأبعاد */}
+        <motion.div variants={item} className="relative flex justify-center py-10 sm:py-16">
+          <div
+            aria-hidden="true"
+            className="absolute left-1/2 top-1/2 h-[22rem] w-[22rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-3xl sm:h-[28rem] sm:w-[28rem]"
+            style={{
+              background:
+                'radial-gradient(circle, color-mix(in srgb, var(--accent-foreground) 35%, transparent) 0%, transparent 70%)',
+            }}
+          />
+          <Card className="relative mx-auto w-full max-w-sm overflow-hidden rounded-3xl border-foreground/10 p-0 shadow-xl">
+            <div className="border-b border-border/10 p-4">
               <p className="font-semibold text-foreground">أحمد محمد</p>
               <p className="text-xs text-muted-foreground">المتبقي: ٣٬٢٠٠ ج.م — قسط ٤٠٠ ج.م</p>
             </div>
@@ -99,7 +73,7 @@ export function Hero() {
                   key={month.label}
                   className={cn(
                     'flex-1 px-1 py-4 text-center',
-                    index !== demoMonths.length - 1 && 'border-e border-dashed border-border',
+                    index !== demoMonths.length - 1 && 'border-e border-dashed border-border/10',
                     statusStyles[month.status],
                   )}
                 >
@@ -109,6 +83,49 @@ export function Hero() {
             </div>
           </Card>
         </motion.div>
+
+        {/* صف نصي غير متماثل: العنوان والدعوة للعمل من جهة، الوصف والقدرات من الأخرى */}
+        <div className="grid gap-10 border-t border-foreground/10 pt-10 sm:grid-cols-2 sm:gap-6">
+          <div>
+            <motion.h1
+              variants={item}
+              className="font-brand text-4xl leading-tight text-foreground sm:text-5xl"
+            >
+              إدارة تشعر بها.
+              <br />
+              أقساط تُحصَّل فعلًا.
+            </motion.h1>
+            <motion.div variants={item} className="mt-6 flex flex-wrap items-center gap-3">
+              <Button asChild size="lg">
+                <Link to="/register">
+                  ابدأ مجانًا
+                  <ArrowLeft />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="border-foreground/20">
+                <Link to="/login">تسجيل الدخول</Link>
+              </Button>
+            </motion.div>
+          </div>
+
+          <div className="sm:pt-2">
+            <motion.p variants={item} className="max-w-sm text-muted-foreground">
+              سواء كان تتبع العملاء، أو تسجيل الدفعات، أو متابعة فريق التحصيل —{' '}
+              <span className="text-foreground">نصمم أدوات يشعر بها أصحاب المحلات</span>، لا مجرد
+              دفتر رقمي.
+            </motion.p>
+            <motion.div variants={item} className="mt-4 flex flex-wrap gap-2">
+              {capabilities.map((label) => (
+                <span
+                  key={label}
+                  className="rounded-full border border-foreground/25 px-3.5 py-1.5 text-xs font-medium text-foreground"
+                >
+                  {label}
+                </span>
+              ))}
+            </motion.div>
+          </div>
+        </div>
       </motion.div>
     </section>
   )
