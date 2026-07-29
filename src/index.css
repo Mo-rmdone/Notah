@@ -47,6 +47,14 @@
   --sidebar-accent: #105147;
   --sidebar-accent-foreground: #f2fbf8;
   --sidebar-border: #16564c;
+
+  /* مُعرَّفة كـ var() هنا حتى تتوارثها .theme-mdx فعليًا — @theme inline يُثبّت
+     القيم الحرفية وقت البناء، فلا يستجيب لأي تغيير وقت التشغيل بلا هذا المستوى
+     من التفويض. Indirected through :root so .theme-mdx's override actually
+     reaches the generated utility — @theme inline bakes literal values at
+     build time, so only a var() reference stays live at runtime. */
+  --font-sans-value: 'Cairo', ui-sans-serif, system-ui, sans-serif;
+  --font-brand-value: 'Aref Ruqaa', 'Cairo', serif;
 }
 
 @theme inline {
@@ -89,8 +97,8 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-sans: 'Cairo', ui-sans-serif, system-ui, sans-serif;
-  --font-brand: 'Aref Ruqaa', 'Cairo', serif;
+  --font-sans: var(--font-sans-value);
+  --font-brand: var(--font-brand-value);
 }
 
 @layer base {
@@ -115,4 +123,28 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* الصفحة التسويقية — نظام ألوان وخطوط مستقل، مستوحى من mdx.so.
+   Scoped to the public marketing homepage only — see docs/design-system-mdx.md.
+   The authenticated app's tokens above are untouched by this. */
+.theme-mdx {
+  --background: #ffffff;
+  --foreground: #131313;
+  --card: #ffffff;
+  --card-foreground: #131313;
+  --muted: #f5f5f4;
+  --muted-foreground: #8a8f8d;
+  --primary: #101820;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f5f4;
+  --secondary-foreground: #131313;
+  --accent: #fff2e6;
+  --accent-foreground: #ff8200;
+  --border: #000000;
+  --input: #000000;
+  --ring: #101820;
+  --radius: 9999px;
+  --font-sans-value: 'Cairo', ui-sans-serif, system-ui, sans-serif;
+  --font-brand-value: 'Changa', 'Cairo', sans-serif;
 }

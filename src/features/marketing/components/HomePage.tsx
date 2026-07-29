@@ -6,7 +6,7 @@ import { CtaFooter } from '@/features/marketing/components/CtaFooter'
 
 export function HomePage() {
   return (
-    <div className="min-h-svh bg-background">
+    <div className="theme-mdx min-h-svh bg-background font-sans text-foreground">
       <SiteHeader />
       <main>
         <Hero />
