@@ -6,9 +6,6 @@ export interface CustomerPaymentRow extends Tables<'customer_payments'> {
   contract: { id: string; category: Database['public']['Enums']['product_category'] } | null
 }
 
-export type PerformanceMonth =
-  Database['public']['Functions']['customer_performance']['Returns'][number]
-
 const PAYMENT_SELECT =
   '*, collector:profiles!customer_payments_collected_by_fkey(full_name), contract:contracts!inner(id, category, customer_id)'
 
@@ -53,12 +50,4 @@ export async function addCustomerPayment(
 export async function deleteCustomerPayment(id: string): Promise<void> {
   const { error } = await supabase.from('customer_payments').delete().eq('id', id)
   if (error) throw error
-}
-
-export async function getCustomerPerformance(customerId: string): Promise<PerformanceMonth[]> {
-  const { data, error } = await supabase.rpc('customer_performance', {
-    p_customer_id: customerId,
-  })
-  if (error) throw error
-  return data
 }

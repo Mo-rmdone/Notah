@@ -3,7 +3,6 @@ import { toast } from 'sonner'
 import {
   addCustomerPayment,
   deleteCustomerPayment,
-  getCustomerPerformance,
   listCustomerPayments,
   type CustomerPaymentRow,
 } from '@/features/payments/api/payments'
@@ -16,13 +15,6 @@ export function useCustomerPayments(customerId: string) {
   return useQuery({
     queryKey: ['customer-payments', customerId],
     queryFn: () => listCustomerPayments(customerId),
-  })
-}
-
-export function useCustomerPerformance(customerId: string) {
-  return useQuery({
-    queryKey: ['customer-performance', customerId],
-    queryFn: () => getCustomerPerformance(customerId),
   })
 }
 
@@ -40,7 +32,10 @@ function invalidateAfterPayment(
   void queryClient.invalidateQueries({ queryKey: ['customer-payments', customerId] })
   void queryClient.invalidateQueries({ queryKey: ['contracts', customerId] })
   void queryClient.invalidateQueries({ queryKey: ['customer', customerId] })
-  void queryClient.invalidateQueries({ queryKey: ['customer-performance', customerId] })
+  // إبطال بالبادئة بدل تمرير معرّف العقد — نفس أسلوب customers وdashboard تحت.
+  // Prefix invalidation rather than threading a contract id through — same
+  // broad-invalidation style already used for customers and dashboard below.
+  void queryClient.invalidateQueries({ queryKey: ['installments'] })
   void queryClient.invalidateQueries({ queryKey: ['customers'] })
   void queryClient.invalidateQueries({ queryKey: ['dashboard'] })
 }

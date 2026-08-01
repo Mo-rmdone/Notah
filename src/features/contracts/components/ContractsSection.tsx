@@ -18,6 +18,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { EmptyState, ErrorState } from '@/components/shared/states'
 import { SelectField, TextField } from '@/components/shared/form-fields'
 import { AddPaymentDialog } from '@/features/payments/components/AddPaymentDialog'
+import { InstallmentSchedule } from '@/features/contracts/components/InstallmentSchedule'
 import {
   useCreateContract,
   useCustomerContracts,
@@ -165,6 +166,10 @@ function ContractCard({
         {paymentWindowLabels[contract.payment_window]}
         {contract.note ? ` · ${contract.note}` : ''}
       </p>
+
+      <div className="mt-4">
+        <InstallmentSchedule contractId={contract.id} />
+      </div>
     </div>
   )
 }

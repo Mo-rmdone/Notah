@@ -26,7 +26,6 @@ import {
 } from '@/features/customers/hooks/useCustomers'
 import { AddPaymentDialog } from '@/features/payments/components/AddPaymentDialog'
 import { PaymentHistory } from '@/features/payments/components/PaymentHistory'
-import { PerformanceWidget } from '@/features/payments/components/PerformanceWidget'
 import { ContractsSection } from '@/features/contracts/components/ContractsSection'
 import { useCustomerContracts } from '@/features/contracts/hooks/useContracts'
 import { legalStatusLabels } from '@/lib/labels'
@@ -93,8 +92,6 @@ function CustomerDetail({ customer }: { customer: Tables<'customers'> }) {
         isOwner={isOwner}
         customerArchived={!!customer.archived_at}
       />
-
-      <PerformanceWidget customerId={customer.id} />
 
       <PaymentHistory customerId={customer.id} />
 
