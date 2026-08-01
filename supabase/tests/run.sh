@@ -35,6 +35,9 @@ copy_in "$ROOT/supabase/seed.sql"
 copy_in "$ROOT/supabase/tests/01_logic.sql"
 copy_in "$ROOT/supabase/tests/02_rls.sql"
 copy_in "$ROOT/supabase/tests/03_tenancy.sql"
+copy_in "$ROOT/supabase/tests/04_schedule.sql"
+copy_in "$ROOT/supabase/tests/05_allocation.sql"
+copy_in "$ROOT/supabase/tests/06_audit.sql"
 for f in "$ROOT"/supabase/migrations/*.sql; do copy_in "$f"; done
 
 run() { docker exec "$CONTAINER" psql -U postgres -d app -v ON_ERROR_STOP=1 -q -f "/tmp/$1"; }
@@ -51,5 +54,14 @@ docker exec "$CONTAINER" psql -U postgres -d app -f /tmp/02_rls.sql
 
 echo "→ cross-tenant isolation gate"
 docker exec "$CONTAINER" psql -U postgres -d app -f /tmp/03_tenancy.sql
+
+echo "→ schedule engine checks"
+docker exec "$CONTAINER" psql -U postgres -d app -f /tmp/04_schedule.sql
+
+echo "→ payment allocation + carry-over regression"
+docker exec "$CONTAINER" psql -U postgres -d app -f /tmp/05_allocation.sql
+
+echo "→ audit log checks"
+docker exec "$CONTAINER" psql -U postgres -d app -f /tmp/06_audit.sql
 
 echo "✓ done — every 'pass' column should read t, and every NOTICE should end in t"
