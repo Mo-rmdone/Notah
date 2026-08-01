@@ -10,6 +10,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_log: {
+        Row: {
+          action: string
+          after_json: Json | null
+          before_json: Json | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          id: string
+          org_id: string
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          after_json?: Json | null
+          before_json?: Json | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          org_id: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          after_json?: Json | null
+          before_json?: Json | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          org_id?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       capital_entries: {
         Row: {
           amount: number
@@ -190,6 +226,45 @@ export type Database = {
         }
         Relationships: []
       }
+      installments: {
+        Row: {
+          amount_due: number
+          amount_paid: number
+          contract_id: string
+          created_at: string
+          due_date: string
+          id: string
+          org_id: string
+          paid_at: string | null
+          seq_no: number
+          status: Database['public']['Enums']['installment_status']
+        }
+        Insert: {
+          amount_due: number
+          amount_paid?: number
+          contract_id: string
+          created_at?: string
+          due_date: string
+          id?: string
+          org_id?: string
+          paid_at?: string | null
+          seq_no: number
+          status?: Database['public']['Enums']['installment_status']
+        }
+        Update: {
+          amount_due?: number
+          amount_paid?: number
+          contract_id?: string
+          created_at?: string
+          due_date?: string
+          id?: string
+          org_id?: string
+          paid_at?: string | null
+          seq_no?: number
+          status?: Database['public']['Enums']['installment_status']
+        }
+        Relationships: []
+      }
       organizations: {
         Row: {
           address: string | null
@@ -217,6 +292,33 @@ export type Database = {
           max_collectors?: number
           name?: string
           owner_id?: string
+        }
+        Relationships: []
+      }
+      payment_allocations: {
+        Row: {
+          amount: number
+          created_at: string
+          id: string
+          installment_id: string
+          org_id: string
+          payment_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          id?: string
+          installment_id: string
+          org_id?: string
+          payment_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          id?: string
+          installment_id?: string
+          org_id?: string
+          payment_id?: string
         }
         Relationships: []
       }
@@ -418,6 +520,7 @@ export type Database = {
     Enums: {
       business_size: 'individual' | 'small' | 'medium' | 'large'
       capital_entry_type: 'deposit' | 'withdrawal'
+      installment_status: 'pending' | 'partial' | 'paid' | 'waived'
       legal_status: 'clean' | 'in_litigation'
       payment_window: 'early' | 'mid' | 'late'
       product_category: 'household' | 'appliances' | 'furniture'
@@ -532,6 +635,7 @@ export const Constants = {
     Enums: {
       business_size: ['individual', 'small', 'medium', 'large'],
       capital_entry_type: ['deposit', 'withdrawal'],
+      installment_status: ['pending', 'partial', 'paid', 'waived'],
       legal_status: ['clean', 'in_litigation'],
       payment_window: ['early', 'mid', 'late'],
       product_category: ['household', 'appliances', 'furniture'],
